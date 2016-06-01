@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
-  
+  before_action :logged_in_user, only:[:edit, :update]
+  before_action :logincheck, only:[:edit, :update]
+
   def show 
    @user = User.find(params[:id])
    @microposts = @user.microposts.order(created_at: :desc)
@@ -18,6 +20,19 @@ class UsersController < ApplicationController
       render 'new'
     end
   end
+  
+  def edit
+ 
+  end
+  
+  def update
+
+    if (@user.update(user_profile))
+      flash[:success] = "更新しました。"
+    end
+    redirect_to user_path(@user) 
+  end
+    
 
   def followings
     @user = User.find(params[:id])
@@ -30,9 +45,22 @@ class UsersController < ApplicationController
   end
 
   private
+  
+  def logincheck
+    @user = User.find(params[:id])
+    if (current_user != @user)
+      redirect_to :root
+    end
+  end
 
   def user_params
     params.require(:user).permit(:name, :email, :password,
                                  :password_confirmation)
+  end
+  
+  def user_profile
+    params.require(:user).permit(:name, :email, :password,
+                                 :password_confirmation,
+                                 :profile, :place)
   end
 end

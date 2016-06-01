@@ -1,0 +1,6 @@
+<%= @user.name %>'s follower list
+@followers.each do |user|
+  <ul>
+     <li><%= gravatar_for(user) %> <%= user.name %></li>
+  </ul>
+end
