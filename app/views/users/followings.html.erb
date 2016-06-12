@@ -1,6 +1,9 @@
 <%= @user.name %>'s following list
-@followings.each do |user|
-  <ul>
-     <li><%= gravatar_for(user) %> <%= user.name %></li>
+  <ul class="user-list">
+    <% @followings.each do |user| %>
+       <li>
+         <%= link_to gravatar_for(user) , user_path(user.id) %>
+         <%= link_to user.name, user_path(user.id) %>
+       </li>
+    <% end %>
   </ul>
-end
